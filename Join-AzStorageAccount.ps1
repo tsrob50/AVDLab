@@ -7,13 +7,21 @@
 
 # 1. Be sure to open PowerShell with Administrator rights to run the commands below 
 
-# 2. Connect to Azure AD
+# 2. Change the execution policy to unblock importing AzFilesHybrid.psm1 module
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+
+# 3. Install the Azure module (delayed start)
+#    Click Yes when prompted, this command can take a couple minutes to finish
+Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
+
+# 4. Connect to Azure AD
+#    Login screen may be hidden behind the ISE window
 Connect-AzAccount
 
-# 3. Download and extract the AzFilesHybrid.zip Module located at the link below
+# 5. Download and extract the AzFilesHybrid.zip Module located at the link below
 #    https://github.com/Azure-Samples/azure-files-samples/releases
 
-# 4. Change the working PowerShell Directory to the AzFilesHybrid directory (Defaults to the download directory)
+# 6. Change the working PowerShell Directory to the AzFilesHybrid directory (Defaults to the download directory)
 cd C:\Users\xxxxAdmin\Downloads\AzFilesHybrid
 
 # 5. Update the variables below with your lab settings
@@ -26,21 +34,14 @@ $StorageAccountName = "<storage-account-name-here>"
 #    Select the option to run the command when prompted.
 #    Verify each command runs successfully before moving to the next.
 
-
-# Change the execution policy to unblock importing AzFilesHybrid.psm1 module
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
-
-# Navigate to where AzFilesHybrid is unzipped and stored and run to copy the files into your path
+# Verify the working directory is set to where the AzFilesHybrid was unzipped run to copy the files into your path
+# Select Run Once when prompted
 .\CopyToPSPath.ps1 
 
 # Import AzFilesHybrid module
+# Select Run Once and Yes to All when prompted
+# RESTART ISE?
 Import-Module -Name AzFilesHybrid
-
-# Login with an Azure AD credential that has either storage account owner or contributor Azure role assignment
-# If you are logging into an Azure environment other than Public (ex. AzureUSGovernment) you will need to specify that.
-# See https://docs.microsoft.com/azure/azure-government/documentation-government-get-started-connect-with-ps
-# for more information.
-Connect-AzAccount
 
 # Define parameters
 # $StorageAccountName is the name of an existing storage account that you want to join to AD
@@ -63,6 +64,7 @@ Select-AzSubscription -SubscriptionId $SubscriptionId
 # You can use to this PowerShell cmdlet: Get-ADOrganizationalUnit to find the Name and DistinguishedName of your target OU. If you are using the OU Name, specify it with -OrganizationalUnitName as shown below. If you are using the OU DistinguishedName, you can set it with -OrganizationalUnitDistinguishedName. You can choose to provide one of the two names to specify the target OU.
 # You can choose to create the identity that represents the storage account as either a Service Logon Account or Computer Account (default parameter value), depends on the AD permission you have and preference. 
 # Run Get-Help Join-AzStorageAccountForAuth for more details on this cmdlet.
+# Click Run Once when prompted
 
 Join-AzStorageAccount `
         -ResourceGroupName $ResourceGroupName `
@@ -72,8 +74,6 @@ Join-AzStorageAccount `
         -OrganizationalUnitDistinguishedName $OuDistinguishedName `
         -EncryptionType $EncryptionType
 
-#Run the command below to enable AES256 encryption. If you plan to use RC4, you can skip this step.
-Update-AzStorageAccountAuthForAES256 -ResourceGroupName $ResourceGroupName -StorageAccountName $StorageAccountName
 
 #You can run the Debug-AzStorageAccountAuth cmdlet to conduct a set of basic checks on your AD configuration with the logged on AD user. This cmdlet is supported on AzFilesHybrid v0.1.2+ version. For more details on the checks performed in this cmdlet, see Azure Files Windows troubleshooting guide.
 #Debug-AzStorageAccountAuth -StorageAccountName $StorageAccountName -ResourceGroupName $ResourceGroupName -Verbose
@@ -84,7 +84,7 @@ Update-AzStorageAccountAuthForAES256 -ResourceGroupName $ResourceGroupName -Stor
 ########################################################################
 
 # Get the target storage account
-$storageaccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -Name $storageAccount
+$storageaccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -Name $storageAccountName
 # List the directory service of the selected service account
 $storageAccount.AzureFilesIdentityBasedAuth.DirectoryServiceOptions
 # List the directory domain information if the storage account has enabled AD DS authentication for file shares
