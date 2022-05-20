@@ -78,10 +78,9 @@ Join-AzStorageAccount `
 #You can run the Debug-AzStorageAccountAuth cmdlet to conduct a set of basic checks on your AD configuration with the logged on AD user. This cmdlet is supported on AzFilesHybrid v0.1.2+ version. For more details on the checks performed in this cmdlet, see Azure Files Windows troubleshooting guide.
 #Debug-AzStorageAccountAuth -StorageAccountName $StorageAccountName -ResourceGroupName $ResourceGroupName -Verbose
 
-########################################################################
 # 7. The storage account is now configured for Windows AD authentication
 #    Run the following commands to verify configuration
-########################################################################
+
 
 # Get the target storage account
 $storageaccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -Name $storageAccountName
@@ -89,3 +88,12 @@ $storageaccount = Get-AzStorageAccount -ResourceGroupName $ResourceGroupName -Na
 $storageAccount.AzureFilesIdentityBasedAuth.DirectoryServiceOptions
 # List the directory domain information if the storage account has enabled AD DS authentication for file shares
 $storageAccount.AzureFilesIdentityBasedAuth.ActiveDirectoryProperties
+
+
+
+###########################################################################
+# Mount the storage account with an access key
+# Update the settings below to match your environment 
+###########################################################################
+
+net use F: \\<storage-account-name>.file.core.windows.net\<share-name> /user:Azure\<storage-account-name> <storage-account-key>
