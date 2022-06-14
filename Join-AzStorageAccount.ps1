@@ -16,7 +16,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 
 
 # 3. Install the Azure module (delayed start)
-#    Click Yes when prompted, this command can take a couple minutes to finish
+#    Click Yes when prompted, this command can take a couple minutes to finish.  It may seem to "hang" at complete as it finishes.
 Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
 
 
@@ -26,12 +26,12 @@ Connect-AzAccount
 
 
 # 5. Download and extract the AzFilesHybrid.zip Module located at the link below
-#    https://github.com/Azure-Samples/azure-files-samples/releases
+Invoke-WebRequest -Uri https://github.com/Azure-Samples/azure-files-samples/releases/download/v0.2.4/AzFilesHybrid.zip -OutFile C:\Users\$env:USERNAME\Downloads\AzFilesHybrid.zip
+Expand-Archive -Path C:\Users\$env:USERNAME\Downloads\AzFilesHybrid.zip -DestinationPath C:\Users\$env:USERNAME\Downloads\AzFilesHybrid\
 
 
 # 6. Change the working PowerShell Directory to the AzFilesHybrid directory (Defaults to the download directory)
-#    Update "xxxx" with your Lab ID
-cd C:\Users\xxxxAdmin\Downloads\AzFilesHybrid
+cd C:\Users\$env:USERNAME\Downloads\AzFilesHybrid
 
 
 # 7. Verify the working directory is set to where the AzFilesHybrid was unzipped run to copy the files into your path
