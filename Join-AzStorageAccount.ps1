@@ -100,6 +100,7 @@ $storageAccount.AzureFilesIdentityBasedAuth.ActiveDirectoryProperties
 #     This cmdlet is supported on AzFilesHybrid v0.1.2+ version. For more details on the checks performed in this cmdlet, see Azure Files Windows troubleshooting guide.
 Debug-AzStorageAccountAuth -StorageAccountName $StorageAccountName -ResourceGroupName $ResourceGroupName -Verbose
 
+
 ###########################################################################
 # Mount the storage account with an access key
 # Update the settings below to match your environment 
