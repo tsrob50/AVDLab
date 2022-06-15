@@ -41,7 +41,6 @@ cd C:\Users\$env:USERNAME\Downloads\AzFilesHybrid
 
 # 8. Import AzFilesHybrid module
 #    Select Run Once and Yes to All when prompted
-#    RESTART ISE?
 Import-Module -Name AzFilesHybrid
 
 
