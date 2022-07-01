@@ -35,7 +35,7 @@ cd C:\Users\$env:USERNAME\Downloads\AzFilesHybrid
 
 
 # 7. Verify the working directory is set to where the AzFilesHybrid was unzipped run to copy the files into your path
-#    Select Run Once when prompted
+#    Select Run Once if prompted
 .\CopyToPSPath.ps1 
 
 
